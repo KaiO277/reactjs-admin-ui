@@ -11,6 +11,10 @@ import RouteGuard from "./components/Route/RouteGuard";
 // Pages
 import Dashboard from "./pages/Dashboard";
 import ProductList from "./pages/Product/index";
+import BetList from "./pages/Bet/index";
+import NFTList from "./pages/NFT/index";
+import UserDetailView from "./pages/Product/view";
+// import UserDetailView from "./pages/Product/view";
 import LoginPage from "./pages/Login";
 import { Outlet } from "react-router-dom";
 
@@ -49,7 +53,12 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/product/list" element={<ProductList />} />
+            <Route path="/user/list" element={<ProductList />} />
+            <Route path="/user/view" element={<UserDetailView />} />
+            <Route path="/nfts/list" element={<NFTList />} />
+            {/* <Route path="/nfts/view" element={<NFTView />} /> */}
+            <Route path="/stake/list" element={<BetList />} />
+            <Route path="/stake/view" element={<UserDetailView />} />
           </Route>
         </Route>
 

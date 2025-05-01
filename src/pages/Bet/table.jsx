@@ -6,8 +6,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 
-const TableProduct = () => {
-    const [users, setUsers] = useState([]);
+const TableBet = () => {
+    const [bets, setBets] = useState([]);
     const [loading, setLoading] = useState(true); // thêm trạng thái loading
     const navigate = useNavigate()
 
@@ -16,8 +16,8 @@ const TableProduct = () => {
             try {
                  // lấy token mỗi lần fetch
                 const response = await axios.get(
-                    "https://dagamebc-production.up.railway.app/api/users/");
-                setUsers(response.data);
+                    "https://dagamebc-production.up.railway.app/api/bets/");
+                    setBets(response.data);
             } catch (err) {
                 console.error("Error fetching data:", err);
             } finally {
@@ -28,7 +28,7 @@ const TableProduct = () => {
         fetchData();
     }, []);
 
-    // console.log("User: ", users);
+    console.log("Bet: ", bets);
     
 
     return (
@@ -36,32 +36,36 @@ const TableProduct = () => {
             <table className="table table-bordered table-striped v-align">
                 <thead className="thead-dark">
                     <tr>
-                        <th>UID</th>
-                        <th>USERNAME</th>
-                        <th>EMAIL</th>
-                        <th>Wallet Address</th>
-                        <th>ACTION</th>
+                        <th>ID</th>
+                        <th>Amount</th>
+                        <th>Created At</th>
+                        <th>User</th>
+                        <th>NFT</th>
+                        <th>Race</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan="5" className="text-center">Loading...</td>
+                            <td colSpan="7" className="text-center">Loading...</td>
                         </tr>
-                    ) : users.length > 0 ? (
-                        users.map((user, index) => (
-                            <tr key={user.id || index}>
-                                <td>#{index + 1}</td>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.profile?.wallet_address || "N/A"}</td>
+                    ) : bets.length > 0 ? (
+                        bets.map((bet, index) => (
+                            <tr key={bet.id || index}>
+                                <td>{bet.id}</td>
+                                <td>{bet.amount}</td>
+                                <td>{new Date(bet.created_at).toLocaleString()}</td>
+                                <td>{bet.user}</td>
+                                <td>{bet.nft}</td>
+                                <td>{bet.race}</td>
                                 <td>
                                     <div className="actions d-flex align-items-center">
                                         <Button
                                             className="secondary"
                                             color="secondary"
-                                            onClick={() => navigate(`/user/view?id=${user.id}`)}
+                                            onClick={() => navigate(`/bet/view?id=${bet.id}`)}
                                         >
                                             <FaEye />
                                         </Button>
@@ -73,7 +77,7 @@ const TableProduct = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="5" className="text-center">No users found.</td>
+                            <td colSpan="7" className="text-center">No bets found.</td>
                         </tr>
                     )}
                 </tbody>
@@ -86,4 +90,4 @@ const TableProduct = () => {
     );
 };
 
-export default TableProduct;
+export default TableBet;

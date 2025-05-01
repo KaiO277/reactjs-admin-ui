@@ -29,8 +29,7 @@ const Dashboard = () => {
                             <DashboardBox color={["#1da256", "#48d483"]} icon={<FaUserCircle/>} title={'Total Users'}/>
                             <DashboardBox color={["#c012e2", "#eb64fe"]} icon={<FaCartShopping/>} title={'Total Orders'}/>
                             <DashboardBox color={["#2c78e5", "#60aff5"]} icon={<IoBagHandle/>} title={'Total Products'}/>
-                            <DashboardBox color={["#e1950e", "#f3cd29"]} icon={<GiStarsStack/>} title={'Total Reviews'}/>
-                            
+                            <DashboardBox color={["#e1950e", "#f3cd29"]} icon={<GiStarsStack/>} title={'Total Reviews'}/>                            
                         </div>
                     </div>
 
@@ -49,9 +48,9 @@ const Dashboard = () => {
 
                 </div>
                     <div className="card shadow border-0 p-3 mt-3">
-                        <h3 className="hd">Best Selling Products</h3>
+                        <h3 className="hd">Users List</h3>
 
-                        <div className="row cardFilters mt-3">
+                        {/* <div className="row cardFilters mt-3">
                             <div className="col-md-3">
                                 <h4>SHOW BY</h4>
                                 <FormControl size="small" className="w-100">
@@ -95,7 +94,7 @@ const Dashboard = () => {
                                 </FormControl>
 
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* table list */}
                         <ProductList />

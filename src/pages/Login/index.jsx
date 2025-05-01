@@ -7,7 +7,7 @@ import "../../styles/LoginPage.css";
 import BackgroundImage from "../../assets/images/background.png";
 import Logo from "../../assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
-import { setAuthToken } from "../../helpers/setAuthToken";
+import { setAuthToken } from "../../helpers/setAuthToken"; // Giúp set token vào header axios
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -19,31 +19,39 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError("");
-
+    setError("");  // Đặt lại lỗi mỗi khi gửi form
+  
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login/", {
-        email: email,
-        password,
+      const response = await axios.post("https://dagamebc-production.up.railway.app/api/admin-login/", {
+        username: email,
+        password: password,
       });
-
+  
       console.log("Response:", JSON.stringify(response, null, 2));
-
-      const token = response.data;
-      if (!token) throw new Error("Không có token trong response!");
-
-      localStorage.setItem("token", token);
-      setAuthToken(token);
-
-      console.log("🎯 Token đã lưu:", localStorage.getItem("token"));
-      navigate("/");
+  
+      // Lấy token từ response (các trường 'access' và 'refresh')
+      const { access, refresh } = response.data;
+      if (!access) throw new Error("Không có token trong response!");
+  
+      // Lưu token vào localStorage
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("refreshToken", refresh);
+  
+      // Cài đặt token vào header của axios
+      setAuthToken(access);
+  
+      console.log("🎯 Token đã lưu:", localStorage.getItem("accessToken"));
+      navigate("/");  // Chuyển hướng về trang chính sau khi đăng nhập thành công
     } catch (err) {
       console.error("Lỗi API:", err.response ? err.response.data : err);
-      setError(err.response?.data?.message || "Đăng nhập thất bại!");
+      
+      // Xử lý lỗi và hiển thị thông báo người dùng
+      setError(err.response?.data?.message || "Đăng nhập thất bại! Vui lòng thử lại.");
     } finally {
-      setLoading(false);
+      setLoading(false);  // Đặt lại trạng thái loading khi hoàn thành
     }
   };
+  
 
   const handlePassword = () => {
     toast.info("Password recovery isn't available right now.");
@@ -63,11 +71,11 @@ const LoginPage = () => {
         {error && <Alert variant="danger">{error}</Alert>}
 
         <Form.Group className="mb-2" controlId="text">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control
             type="text"
             value={email}
-            placeholder="Username"
+            placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -78,8 +86,8 @@ const LoginPage = () => {
           <Form.Control
             type="password"
             value={password}
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)} // 🔥 Fix lỗi nhập sai
+            placeholder="Enter your password"
+            onChange={(e) => setPassword(e.target.value)}  // 🔥 Fix lỗi nhập sai
             required
           />
         </Form.Group>

@@ -1,15 +1,15 @@
-import TableProduct from "./table";
+import TableNFT from "./table";
 
-const ProductList = () => {
+const NFTList = () => {
     return (
         <>
-        <h1>List User</h1>
+        <h1>NFTList</h1>
         <div className="right-content w-100">
             <div className="card shadow border-0 p-3 mt-3">
-                <h3 className="hd">User</h3>
+                <h3 className="hd">List NFT</h3>
 
                 <div>
-                    <TableProduct />
+                    <TableNFT />
                 </div>
             </div>
             
@@ -18,4 +18,4 @@ const ProductList = () => {
     )
 }
 
-export default ProductList;
+export default NFTList;
