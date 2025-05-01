@@ -33,15 +33,16 @@ const TableNFT = () => {
 
     return (
         <div className="table-responsive mt-3">
-            {/* <table className="table table-bordered table-striped v-align">
+            <table className="table table-bordered table-striped v-align">
                 <thead className="thead-dark">
                     <tr>
                         <th>ID</th>
-                        <th>Amount</th>
+                        <th>Token ID</th>
+                        <th>Name</th>
+                        {/* <th>Image</th> */}
+                        <th>Staked</th>
                         <th>Created At</th>
                         <th>User</th>
-                        <th>NFT</th>
-                        <th>Race</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -49,23 +50,30 @@ const TableNFT = () => {
                 <tbody>
                     {loading ? (
                         <tr>
-                            <td colSpan="7" className="text-center">Loading...</td>
+                            <td colSpan="8" className="text-center">Loading...</td>
                         </tr>
                     ) : nfts.length > 0 ? (
-                        nfts.map((bet, index) => (
-                            <tr key={bet.id || index}>
-                                <td>{bet.id}</td>
-                                <td>{bet.amount}</td>
-                                <td>{new Date(bet.created_at).toLocaleString()}</td>
-                                <td>{bet.user}</td>
-                                <td>{bet.nft}</td>
-                                <td>{bet.race}</td>
+                        nfts.map((nft, index) => (
+                            <tr key={nft.id || index}>
+                                <td>{nft.id}</td>
+                                <td>{nft.token_id}</td>
+                                <td>{nft.name}</td>
+                                {/* <td>
+                                    <img
+                                        src={nft.image_url}
+                                        alt={nft.name}
+                                        style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                                    />
+                                </td> */}
+                                <td>{nft.staked ? "Yes" : "No"}</td>
+                                <td>{new Date(nft.created_at).toLocaleString()}</td>
+                                <td>{nft.user}</td>
                                 <td>
                                     <div className="actions d-flex align-items-center">
                                         <Button
                                             className="secondary"
                                             color="secondary"
-                                            onClick={() => navigate(`/bet/view?id=${bet.id}`)}
+                                            onClick={() => navigate(`/nft/view?id=${nft.id}`)}
                                         >
                                             <FaEye />
                                         </Button>
@@ -77,11 +85,11 @@ const TableNFT = () => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="7" className="text-center">No nfts found.</td>
+                            <td colSpan="8" className="text-center">No NFTs found.</td>
                         </tr>
                     )}
                 </tbody>
-            </table> */}
+            </table>
 
             <div className="d-flex tableFooter justify-content-center">
                 <Pagination count={10} color="primary" className="pagination" showFirstButton showLastButton />

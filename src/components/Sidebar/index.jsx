@@ -73,6 +73,7 @@ const Sidebar = () => {
                             <ul className='submenu'>
                                 <li><Link to="/stake/list">Stake List</Link></li>
                                 <li><Link to="/stake/view">Stake View</Link></li>
+                                <li><Link to="/stake/add">Stake Upload</Link></li>
                             </ul>
                         </div>
                     </li>
