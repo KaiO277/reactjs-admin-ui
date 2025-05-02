@@ -93,6 +93,7 @@ const Sidebar = () => {
                             <ul className='submenu'>
                                 <li><Link to="/nfts/list">NFT List</Link></li>
                                 <li><Link to="/nfts/view">NFT View</Link></li>
+                                <li><Link to="/nfts/add">NFT Upload</Link></li>
                             </ul>
                         </div>
                     </li>

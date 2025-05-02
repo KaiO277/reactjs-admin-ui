@@ -39,7 +39,7 @@ const TableNFT = () => {
                         <th>ID</th>
                         <th>Token ID</th>
                         <th>Name</th>
-                        {/* <th>Image</th> */}
+                        <th>Image</th>
                         <th>Staked</th>
                         <th>Created At</th>
                         <th>User</th>
@@ -58,13 +58,13 @@ const TableNFT = () => {
                                 <td>{nft.id}</td>
                                 <td>{nft.token_id}</td>
                                 <td>{nft.name}</td>
-                                {/* <td>
+                                <td>
                                     <img
                                         src={nft.image_url}
                                         alt={nft.name}
                                         style={{ width: "50px", height: "50px", objectFit: "cover" }}
                                     />
-                                </td> */}
+                                </td>
                                 <td>{nft.staked ? "Yes" : "No"}</td>
                                 <td>{new Date(nft.created_at).toLocaleString()}</td>
                                 <td>{nft.user}</td>

@@ -33,7 +33,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-          localStorage.removeItem("token");
+          localStorage.clear();
           setAuthToken(null);
           navigate("/login"); // Điều hướng về trang login
     };

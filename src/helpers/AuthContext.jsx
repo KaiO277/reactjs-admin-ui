@@ -54,7 +54,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        localStorage.removeItem("accessToken");
+        console.log("Logging out...");
+        localStorage.clear(); // Xóa toàn bộ localStorage
         setAuthToken(null);  // Xóa token khỏi header axios
         setUser(null);       // Xóa thông tin người dùng
         navigate("/login");  // Chuyển hướng về trang đăng nhập
