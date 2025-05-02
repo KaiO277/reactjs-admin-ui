@@ -40,7 +40,7 @@ const ProfilePage = () => {
           {/* Profile header */}
           <div className="card-header">
             <div className="profile-container">
-              {/* <div className="profile-image-wrapper">
+              <div className="profile-image-wrapper">
                 <img
                   className="profile-image"
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3MzY5OTh8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTc0NTgyODg5MXww&ixlib=rb-4.0.3&q=85"
@@ -50,7 +50,7 @@ const ProfilePage = () => {
                 <button className="edit-photo-btn">
                   <i className="camera-icon">📷</i>
                 </button>
-              </div> */}
+              </div>
               <div className="profile-info">
                 <h3>{user?.username || "null"}</h3>
                 <p>{user?.email || "null"}</p>

@@ -10,6 +10,7 @@ import { useContext, useState } from 'react';
 import { MyContext } from '../../App';
 import { TbCoins } from "react-icons/tb";
 import { LuUsers } from "react-icons/lu";
+import { GiCheckeredFlag } from "react-icons/gi";
 
 const Sidebar = () => {
     const [submenuState, setSubmenuState] = useState({}); // Trạng thái mở/đóng của submenu
@@ -80,6 +81,23 @@ const Sidebar = () => {
                             <li><Link to="/nfts/list">NFT List</Link></li>
                             <li><Link to="/nfts/view">NFT View</Link></li>
                             <li><Link to="/nfts/add">NFT Upload</Link></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <Button
+                        className={`w-100 ${submenuState[4] ? 'active' : ''}`}
+                        onClick={() => toggleSubMenu(4)}
+                    >
+                        <span className='icon'><GiCheckeredFlag /></span>
+                        Race 
+                        <span className='arrow'><FaAngleRight /></span>
+                    </Button>
+                    <div className={`submenuWrapper ${submenuState[4] ? 'colapse' : 'colapsed'}`}>
+                        <ul className='submenu'>
+                            <li><Link to="/race/list">Race List</Link></li>
+                            <li><Link to="/race/view">Race View</Link></li>
+                            <li><Link to="/race/add">Race Upload</Link></li>
                         </ul>
                     </div>
                 </li>
