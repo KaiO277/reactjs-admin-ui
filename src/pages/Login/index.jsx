@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Form, Button, Alert } from "react-bootstrap";
 import "../../styles/LoginPage.css";
 import BackgroundImage from "../../assets/images/background.png";
-import Logo from "../../assets/images/logo.png";
+import Logo from "../../assets/images/logo.jpg";
 import { useNavigate } from "react-router-dom";
 import { setAuthToken } from "../../helpers/setAuthToken"; // Giúp set token vào header axios
 
@@ -36,6 +36,8 @@ const LoginPage = () => {
       // Lưu token vào localStorage
       localStorage.setItem("accessToken", access);
       localStorage.setItem("refreshToken", refresh);
+      localStorage.setItem("username", email); 
+      // localStorage.setItem("email", JSON.stringify(response.data.user.email)); 
   
       // Cài đặt token vào header của axios
       setAuthToken(access);

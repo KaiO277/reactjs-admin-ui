@@ -25,7 +25,10 @@ header .row{
 }
 
 header .logo{text-decoration: none;}
-header .logo img{width: 45px;}
+header .logo img {
+    width: 75px;
+    margin: 10px;
+}
 header .logo span{color: #292929; font-weight: 800; font-size: 24px;}
 
 header button.rounded-circle{min-width: 40px !important; width: 40px !important; height: 40px !important; background: #f0f5ff !important; color: #0858f7;} 
@@ -276,6 +279,10 @@ header button.rounded-circle:hover svg{color: #0858f7 !important;}
     flex-direction: column;
     justify-content: space-around;
     text-align: left !important;
+}
+
+.ml-auto {
+    margin-left: auto !important;
 }
 
 .dashboardBoxWrapper .dashboardBox .col1 h4{
