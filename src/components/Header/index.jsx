@@ -16,10 +16,16 @@ import { useNavigate } from "react-router-dom";
 import { setAuthToken } from "../../helpers/setAuthToken";
 import { FaRegBell } from "react-icons/fa";
 import { LuMessageCircle } from "react-icons/lu";
+import { useEffect, useState } from 'react';
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+    const [userInfo, setUserInfo] = useState({
+        username: "",
+        email: "",
+    });
 
     const context = React.useContext(MyContext);
 
@@ -31,6 +37,14 @@ const Header = () => {
       };
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Lấy thông tin người dùng từ localStorage
+        const username = localStorage.getItem("username") || "Guest";
+        const email = localStorage.getItem("email") || "guest@example.com";
+
+        setUserInfo({ username, email });
+    }, []);
 
     const handleLogout = () => {
           localStorage.clear();
@@ -77,8 +91,8 @@ const Header = () => {
                                     </div>  
 
                                     <div className='userInfo'>
-                                        <h4>KaiO Admin</h4>
-                                        <p className='mb-0'>kaio@gmail.com</p>
+                                        <h4>{userInfo.username}</h4>
+                                        <p className='mb-0'>{userInfo.email}</p>
                                     </div>  
                                 </Button>
                                 <Menu

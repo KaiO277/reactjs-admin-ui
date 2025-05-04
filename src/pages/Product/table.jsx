@@ -10,21 +10,34 @@ const TableProduct = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true); // thêm trạng thái loading
     const navigate = useNavigate()
+    // const token = localStorage.getItem("username");
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                 // lấy token mỗi lần fetch
+                // Lấy token từ localStorage
+                const token = localStorage.getItem("accessToken");
+                if (!token) {
+                    throw new Error("Token not found. Please log in.");
+                }
+    
+                // Gọi API với token trong header
                 const response = await axios.get(
-                    "https://dagamebc-production.up.railway.app/api/users/");
-                setUsers(response.data);
+                    "https://dagamebc-production.up.railway.app/api/users/",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`, // Thêm token vào header
+                        },
+                    }
+                );
+                setUsers(response.data); // Cập nhật danh sách người dùng
             } catch (err) {
                 console.error("Error fetching data:", err);
             } finally {
-                setLoading(false); // luôn dừng loading
+                setLoading(false); // Luôn dừng trạng thái loading
             }
         };
-
+    
         fetchData();
     }, []);
 

@@ -31,16 +31,29 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // lấy token mỗi lần fetch
+                // Lấy token từ localStorage
+                const token = localStorage.getItem("accessToken");
+                if (!token) {
+                    throw new Error("Token not found. Please log in.");
+                }
+    
+                // Gọi API với token trong header
                 const response = await axios.get(
-                    "https://dagamebc-production.up.railway.app/api/users/"
+                    "https://dagamebc-production.up.railway.app/api/users/",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`, // Thêm token vào header
+                        },
+                    }
                 );
-                setUserCount(response.data.length); // cập nhật số lượng người dùng
+                setUserCount(response.data.length); // Cập nhật danh sách người dùng
             } catch (err) {
                 console.error("Error fetching data:", err);
+            } finally {
+                setLoading(false); // Luôn dừng trạng thái loading
             }
         };
-
+    
         fetchData();
     }, []);
 
