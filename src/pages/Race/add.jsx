@@ -2,95 +2,97 @@ import React, { useState, useEffect } from "react";
 import "../../styles/CreateUserForm.css";
 import axios from "axios";
 
-const CreateNFTForm = () => {
+const CreateRaceForm = () => {
   const [formData, setFormData] = useState({
-    token_id: "",
     name: "",
-    image_url: "",
-    staked: false,
-    user: "",
+    status: "",
+    start_time: "",
+    end_time: "",
+    winner_nft: "",
   });
 
-  const [users, setUsers] = useState([]); // State để lưu danh sách người dùng
-  const [loadingUsers, setLoadingUsers] = useState(true); // Trạng thái loading cho danh sách người dùng
+  const [nfts, setNfts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchNFTs = async () => {
       try {
-        const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
+        const token = localStorage.getItem("accessToken");
         if (!token) {
           throw new Error("Token not found. Please log in.");
         }
 
         const response = await axios.get(
-          "https://dagamebc-production.up.railway.app/api/users/",
+          "https://dagamebc-production.up.railway.app/api/nfts/",
           {
-            headers: {
-              Authorization: `Bearer ${token}`, // Gửi token trong header
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setUsers(response.data); // Lưu danh sách người dùng vào state
+
+        setNfts(response.data);
       } catch (err) {
-        console.error("Error fetching users:", err);
+        console.error("Error fetching NFTs:", err);
       } finally {
-        setLoadingUsers(false); // Dừng trạng thái loading
+        setLoading(false);
       }
     };
 
-    fetchUsers();
+    fetchNFTs();
   }, []);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const token = localStorage.getItem("accessToken"); // Lấy token từ localStorage
-        if (!token) {
-            throw new Error("Token not found. Please log in.");
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        throw new Error("Token not found. Please log in.");
+      }
+
+      const response = await axios.post(
+        "https://dagamebc-production.up.railway.app/api/race/",
+        formData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
+      );
 
-        const response = await axios.post(
-            "https://dagamebc-production.up.railway.app/api/nfts/mint/",
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Gửi token trong header
-                },
-            }
-        );
-        console.log("NFT created successfully:", response.data);
-        alert("NFT created successfully!");
+      alert("Race created successfully!");
+      console.log("Response:", response.data);
 
-        // Clear form sau khi thêm thành công
-        setFormData({
-            token_id: "",
-            name: "",
-            image_url: "",
-            staked: false,
-            user: "",
-        });
+      // Reset form
+      setFormData({
+        name: "",
+        status: "",
+        start_time: "",
+        end_time: "",
+        winner_nft: "",
+      });
     } catch (err) {
-        console.error("Error creating NFT:", err);
-        alert("Failed to create NFT. Please try again.");
+      console.error("Error creating race:", err);
+      alert("Failed to create race. Please try again.");
     }
-};
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="right-content w-100">
       <div className="user-form-container">
         {/* Header */}
         <div className="user-form-header">
-          <h3 className="user-form-title">Create New NFT</h3>
+          <h3 className="user-form-title">Create New Race</h3>
           <p className="user-form-subtitle">
-            Fill in the details below to add a new NFT to the system
+            Fill in the details below to add a new race to the system
           </p>
         </div>
 
@@ -98,18 +100,6 @@ const CreateNFTForm = () => {
         <div className="user-form-content">
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
-              <div className="form-group">
-                <label htmlFor="token_id">Token ID</label>
-                <input
-                  type="text"
-                  id="token_id"
-                  name="token_id"
-                  value={formData.token_id}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
               <div className="form-group">
                 <label htmlFor="name">Name</label>
                 <input
@@ -123,48 +113,60 @@ const CreateNFTForm = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="image_url">Image URL</label>
+                <label htmlFor="status">Status</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Select Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="started">Started</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="start_time">Start Time</label>
                 <input
-                  type="url"
-                  id="image_url"
-                  name="image_url"
-                  value={formData.image_url}
+                  type="datetime-local"
+                  id="start_time"
+                  name="start_time"
+                  value={formData.start_time}
                   onChange={handleChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="staked">Staked</label>
+                <label htmlFor="end_time">End Time</label>
                 <input
-                  type="checkbox"
-                  id="staked"
-                  name="staked"
-                  checked={formData.staked}
+                  type="datetime-local"
+                  id="end_time"
+                  name="end_time"
+                  value={formData.end_time}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="user">User</label>
-                {loadingUsers ? (
-                  <p>Loading users...</p>
-                ) : (
-                  <select
-                    id="user"
-                    name="user"
-                    value={formData.user}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">Select a user</option>
-                    {users.map((user) => (
-                      <option key={user.id} value={user.id}>
-                        {user.username} (ID: {user.id})
-                      </option>
-                    ))}
-                  </select>
-                )}
+                <label htmlFor="winner_nft">Winner NFT</label>
+                <select
+                  id="winner_nft"
+                  name="winner_nft"
+                  value={formData.winner_nft}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Winner NFT</option>
+                  {nfts.map((nft) => (
+                    <option key={nft.id} value={nft.id}>
+                      {nft.name} (ID: {nft.id})
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -173,7 +175,7 @@ const CreateNFTForm = () => {
                 Cancel
               </button>
               <button type="submit" className="btn-primary">
-                <i className="fas fa-plus"></i> Create NFT
+                <i className="fas fa-plus"></i> Create Race
               </button>
             </div>
           </form>
@@ -183,4 +185,4 @@ const CreateNFTForm = () => {
   );
 };
 
-export default CreateNFTForm;
+export default CreateRaceForm;
