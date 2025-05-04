@@ -73,7 +73,7 @@ const TableNFT = () => {
                                         <Button
                                             className="secondary"
                                             color="secondary"
-                                            onClick={() => navigate(`/nft/view?id=${nft.id}`)}
+                                            onClick={() => navigate(`/nfts/view?id=${nft.id}`)}
                                         >
                                             <FaEye />
                                         </Button>

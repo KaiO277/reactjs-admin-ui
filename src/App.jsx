@@ -14,6 +14,7 @@ import ProductList from "./pages/Product/index";
 import BetList from "./pages/Bet/index";
 import CreateBetForm from "./pages/Bet/add";
 import NFTList from "./pages/NFT/index";
+import ViewNFTPage from "./pages/NFT/view";
 import RaceList from "./pages/Race/index";
 import CreateRaceForm from "./pages/Race/add";
 import ViewRaceForm from "./pages/Race/view";
@@ -65,7 +66,7 @@ function App() {
             <Route path="/race/add" element={<CreateRaceForm />} />
             <Route path="/race/view" element={<ViewRaceForm />} />
             <Route path="/nfts/add" element={<CreateNFTForm />} />
-            {/* <Route path="/nfts/view" element={<NFTView />} /> */}
+            <Route path="/nfts/view" element={<ViewNFTPage />} />
             <Route path="/stake/list" element={<BetList />} />
             <Route path="/stake/add" element={<CreateBetForm />} />
             <Route path="/stake/view" element={<UserDetailView />} />

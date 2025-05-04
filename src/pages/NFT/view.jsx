@@ -3,145 +3,166 @@ import "../../styles/userView.css";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-const ProfilePage = () => {
-  const [activeTab, setActiveTab] = useState("profile");
+const ViewNFTPage = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    token_id: "",
+    image_url: "",
+    staked: false,
+    created_at: "",
+    user: "",
+  });
+
   const location = useLocation();
-  const [user, setUser] = useState(null);
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id"); // Lấy giá trị của query parameter "id"
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchNFT = async () => {
       try {
         const response = await axios.get(
-          `https://dagamebc-production.up.railway.app/api/users/${id}/`
+          `https://dagamebc-production.up.railway.app/api/nfts/get_ntfs_by_id_api/${id}/`
         );
-        setUser(response.data); // Lưu dữ liệu người dùng vào state
-        console.log("User Data:", response.data); // Hiển thị dữ liệu trong console
+  
+        // Kiểm tra nếu API trả về một mảng
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          const data = response.data[0]; // Lấy đối tượng đầu tiên từ mảng
+          console.log("NFT Data:", data);
+  
+          setFormData({
+            name: data.name || "",
+            token_id: data.token_id || "",
+            image_url: data.image_url || "",
+            staked: data.staked || false,
+            created_at: data.created_at || "",
+            user: data.user || "",
+          });
+        } else {
+          console.error("No NFT data found.");
+        }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching NFT data:", error);
       }
     };
-
+  
     if (id) {
-      fetchUser(); // Gọi API nếu có id
+      fetchNFT();
     }
   }, [id]);
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
-    <>
-      <h1>Product List</h1>
-      <div className="right-content w-100">
-        <div className="card shadow border-0 p-3 mt-3">
-          {/* Profile header */}
-          <div className="card-header">
-            <div className="profile-container">
-              <div className="profile-image-wrapper">
-                <img
-                  className="profile-image"
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3MzY5OTh8MHwxfHNlYXJjaHwxfHx1c2VyfGVufDB8fHx8MTc0NTgyODg5MXww&ixlib=rb-4.0.3&q=85"
-                  alt="User Profile"
-                  loading="lazy"
+    <div className="right-content w-100">
+      <div className="user-form-container">
+        <div className="user-form-header">
+          <h3 className="user-form-title">View/Edit NFT</h3>
+          <p className="user-form-subtitle">
+            View or edit the details of the selected NFT
+          </p>
+        </div>
+
+        <div className="user-form-content">
+          <form>
+            <div className="form-grid">
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                 />
-                <button className="edit-photo-btn">
-                  <i className="camera-icon">📷</i>
-                </button>
               </div>
-              <div className="profile-info">
-                <h3>{user?.username || "null"}</h3>
-                <p>{user?.email || "null"}</p>
-                <p className="joined-date">
-                  Wallet Address: {user?.profile?.wallet_address || "null"}
-                </p>
+
+              <div className="form-group">
+                <label htmlFor="token_id">Token ID</label>
+                <input
+                  type="text"
+                  id="token_id"
+                  name="token_id"
+                  value={formData.token_id}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="image_url">Image URL</label>
+                <input
+                  type="text"
+                  id="image_url"
+                  name="image_url"
+                  value={formData.image_url}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="staked">Staked</label>
+                <select
+                  id="staked"
+                  name="staked"
+                  value={formData.staked ? "true" : "false"}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      staked: e.target.value === "true",
+                    }))
+                  }
+                  required
+                >
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="created_at">Created At</label>
+                <input
+                  type="text"
+                  id="created_at"
+                  name="created_at"
+                  value={new Date(formData.created_at).toLocaleString()}
+                  readOnly
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="user">User ID</label>
+                <input
+                  type="text"
+                  id="user"
+                  name="user"
+                  value={formData.user}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
-          </div>
 
-          {/* Tabs */}
-          <div className="tabs">
-            <button
-              className={`tab ${activeTab === "profile" ? "active" : ""}`}
-              onClick={() => handleTabClick("profile")}
-            >
-              Profile
-            </button>
-          </div>
-
-          {/* Profile Content */}
-          {activeTab === "profile" && (
-            <div className="tab-content">
-              <form className="form-grid">
-                <div className="form-group">
-                  <label>First Name</label>
-                  <input
-                    type="text"
-                    defaultValue={user?.first_name || "null"}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input
-                    type="text"
-                    defaultValue={user?.last_name || "null"}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Email</label>
-                  <input type="email" defaultValue={user?.email || "null"} />
-                </div>
-                <div className="form-group">
-                  <label>Phone</label>
-                  <input
-                    type="text"
-                    defaultValue={user?.phone || "null"}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Country</label>
-                  <select defaultValue={user?.country || "null"}>
-                    <option>United States</option>
-                    <option>Canada</option>
-                    <option>Mexico</option>
-                    <option>United Kingdom</option>
-                    <option>Germany</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>Language</label>
-                  <select defaultValue={user?.language || "null"}>
-                    <option>English</option>
-                    <option>Spanish</option>
-                    <option>French</option>
-                    <option>German</option>
-                    <option>Chinese</option>
-                  </select>
-                </div>
-                <div className="form-group full-width">
-                  <label>Bio</label>
-                  <textarea
-                    rows="3"
-                    defaultValue={user?.bio || "null"}
-                  />
-                </div>
-                <div className="button-group">
-                  <button type="button" className="btn cancel">
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn save">
-                    Save Changes
-                  </button>
-                </div>
-              </form>
+            <div className="form-actions">
+              <button type="button" className="btn-secondary">
+                Cancel
+              </button>
+              <button type="submit" className="btn-primary">
+                Save Changes
+              </button>
             </div>
-          )}
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
-export default ProfilePage;
+export default ViewNFTPage;
