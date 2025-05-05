@@ -65,7 +65,7 @@ const TableBet = () => {
                                         <Button
                                             className="secondary"
                                             color="secondary"
-                                            onClick={() => navigate(`/bet/view?id=${bet.id}`)}
+                                            onClick={() => navigate(`/stake/view?id=${bet.id}`)}
                                         >
                                             <FaEye />
                                         </Button>

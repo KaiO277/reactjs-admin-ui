@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import ProductList from "./pages/Product/index";
 import BetList from "./pages/Bet/index";
 import CreateBetForm from "./pages/Bet/add";
+import ViewBetPage from "./pages/Bet/view";
 import NFTList from "./pages/NFT/index";
 import ViewNFTPage from "./pages/NFT/view";
 import RaceList from "./pages/Race/index";
@@ -69,7 +70,7 @@ function App() {
             <Route path="/nfts/view" element={<ViewNFTPage />} />
             <Route path="/stake/list" element={<BetList />} />
             <Route path="/stake/add" element={<CreateBetForm />} />
-            <Route path="/stake/view" element={<UserDetailView />} />
+            <Route path="/stake/view" element={<ViewBetPage />} />
           </Route>
         </Route>
 
