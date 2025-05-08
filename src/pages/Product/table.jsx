@@ -8,9 +8,8 @@ import axios from 'axios';
 
 const TableProduct = () => {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true); // thêm trạng thái loading
-    const navigate = useNavigate()
-    // const token = localStorage.getItem("username");
+    const [loading, setLoading] = useState(true); // Trạng thái loading
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,8 +19,8 @@ const TableProduct = () => {
                 if (!token) {
                     throw new Error("Token not found. Please log in.");
                 }
-    
-                // Gọi API với token trong header
+
+                // Gọi API để lấy danh sách người dùng
                 const response = await axios.get(
                     "https://dagamebc-production.up.railway.app/api/users/",
                     {
@@ -37,12 +36,45 @@ const TableProduct = () => {
                 setLoading(false); // Luôn dừng trạng thái loading
             }
         };
-    
+
         fetchData();
     }, []);
 
-    // console.log("User: ", users);
-    
+    const handleDelete = async (userId) => {
+        if (window.confirm("Are you sure you want to delete this user?")) {
+            try {
+                const token = localStorage.getItem("accessToken");
+                if (!token) {
+                    throw new Error("Token not found. Please log in.");
+                }
+
+                // Gọi API xóa người dùng
+                await axios.delete(
+                    `https://dagamebc-production.up.railway.app/api/users/delete/${userId}/`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`, // Thêm token vào header
+                        },
+                    }
+                );
+
+                // Gọi lại API để cập nhật danh sách người dùng
+                const response = await axios.get(
+                    "https://dagamebc-production.up.railway.app/api/users/",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setUsers(response.data); // Cập nhật danh sách người dùng
+                alert("User deleted successfully!");
+            } catch (err) {
+                console.error("Error deleting user:", err);
+                alert("Failed to delete user. Please try again.");
+            }
+        }
+    };
 
     return (
         <div className="table-responsive mt-3">
@@ -79,7 +111,13 @@ const TableProduct = () => {
                                             <FaEye />
                                         </Button>
                                         <Button className="success" color="success"><FaPen /></Button>
-                                        <Button className="error" color="error"><MdDelete /></Button>
+                                        <Button
+                                            className="error"
+                                            color="error"
+                                            onClick={() => handleDelete(user.id)}
+                                        >
+                                            <MdDelete />
+                                        </Button>
                                     </div>
                                 </td>
                             </tr>
