@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const TableRace = () => {
-    const [races, setRaces] = useState([]); // Đổi tên state thành races
+    const [races, setRaces] = useState([]); // State lưu danh sách races
     const [loading, setLoading] = useState(true); // Trạng thái loading
     const navigate = useNavigate();
 
@@ -29,7 +29,23 @@ const TableRace = () => {
         fetchData();
     }, []);
 
-    console.log("Races: ", races);
+    const handleDelete = async (raceId) => {
+        if (window.confirm("Are you sure you want to delete this race?")) {
+            try {
+                // Gọi API xóa race
+                await axios.delete(
+                    `https://dagamebc-production.up.railway.app/api/race/delete/${raceId}/`
+                );
+
+                // Cập nhật danh sách races sau khi xóa
+                setRaces((prevRaces) => prevRaces.filter((race) => race.id !== raceId));
+                alert("Race deleted successfully!");
+            } catch (err) {
+                console.error("Error deleting race:", err);
+                alert("Failed to delete race. Please try again.");
+            }
+        }
+    };
 
     return (
         <div className="table-responsive mt-3">
@@ -70,7 +86,13 @@ const TableRace = () => {
                                             <FaEye />
                                         </Button>
                                         <Button className="success" color="success"><FaPen /></Button>
-                                        <Button className="error" color="error"><MdDelete /></Button>
+                                        <Button
+                                            className="error"
+                                            color="error"
+                                            onClick={() => handleDelete(race.id)}
+                                        >
+                                            <MdDelete />
+                                        </Button>
                                     </div>
                                 </td>
                             </tr>
